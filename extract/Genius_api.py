@@ -1,4 +1,5 @@
 import os
+from time import time
 import requests
 
 BASE_URL = "https://api.genius.com"
@@ -10,8 +11,32 @@ class GeniusClient:
         self.session.headers["Authorization"] = f"Bearer {token}"
 
 
-    def _get(self, path: str, **params) -> dict:
-        resp = self.session.get(f"{BASE_URL}{path}", params=params, timeout =30)
-        resp.raise_for_status()           # raises an exception on 4xx/5xx
-        return resp.json()["response"]
+    def _get(self, path: str, max_retries: int = 3, **params) -> dict:
+        URL = f"{BASE_URL}{path}"
+
+        for attempt in range(max_retries):
+            resp = self.session.get(f"{BASE_URL}{path}", params=params, timeout=30)
+
+            if resp.status_code == 429 or resp.status_code >= 500:
+                wait_time = 2 ** attempt #exponential backoff: 1s, 2s, 4s...
+                print(f"Request failed with status code {resp.status_code}. Retrying in {wait_time} seconds...")
+                time.sleep(wait_time)
+                continue #loop again
+
+            # non-transient error (4xx), raise an exception    
+            resp.raise_for_status()   
+
+            #sucessful response, return the JSON data (2xx status code)
+            return resp.json()["response"]
+
+        resp.raise_for_status()  # Raise an exception for any remaining errors
+
+
+
+
+
+
+
+
+
 
