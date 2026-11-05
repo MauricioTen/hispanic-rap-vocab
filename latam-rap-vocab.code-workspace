@@ -9,7 +9,8 @@
 			"*.copilotmd": "vscode.markdown.preview.editor",
 			"*.parquet": "duckdb.dataFileViewer",
 			"*.tsv": "duckdb.dataFileViewer",
-			"*.xlsx": "duckdb.dataFileViewer"
+			"*.xlsx": "duckdb.dataFileViewer",
+			"*.csv": "duckdb.dataFileViewer"
 		}
 	}
 }
