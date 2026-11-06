@@ -1,2 +1,5 @@
 name: hispanic_rap
+version: "1.0.0"
 profile: hispanic_rap
+model-paths: ["models"]
+seed-paths: ["seeds"]

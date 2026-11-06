@@ -1,0 +1,8 @@
+version: 2
+seeds:
+  - name: artists
+    columns:
+      - name: genius_artist_id
+        tests: [unique, not_null]
+      - name: rapper_name
+        tests: [not_null]
