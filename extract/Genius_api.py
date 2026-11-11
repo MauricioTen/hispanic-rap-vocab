@@ -42,6 +42,15 @@ class GeniusClient:
         return found
 
 
+    def artist_songs_page(self, artist_id: int, page: int) -> dict:
+        return self._get(
+        f"/artists/{artist_id}/songs",
+        per_page=50,
+        page=page,
+        sort="title"
+    )
+
+
 
 
 
